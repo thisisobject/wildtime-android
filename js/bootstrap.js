@@ -16,7 +16,7 @@ $(function(){
 		e.preventDefault();
 		var $menu = $('#menu');
 		if ($menu.css('display') === 'none') {
-			$menu.slideDown(300);
+			$menu.css({display: 'block'});
 		}
 /*
 		else {
@@ -29,14 +29,20 @@ $(function(){
 	});
 	$('.menu-nav-item').on('tap, click', function(e) {
 		e.preventDefault();
-		var $content = $('#' + $(this).data('contentId'));
+		var selector = '#' + $(this).data('contentId');
+		var $content = $(selector);
 		if ($content.css('display') === 'none') {
+			$('.menu-content-item').not(selector).each(function() {
+				if ($(this).css('display') !== 'none') {
+					$(this).slideUp(300);
+				}
+			});
 			$content.slideDown(300);
-			$('header').css({position: 'absolute'});
+/* 			$('header').css({position: 'absolute'}); */
 		}
 		else {
 			$content.slideUp(300);
-			$('header').css({position: 'fixed'});
+/* 			$('header').css({position: 'fixed'}); */
 		}
 	});
 	$('.nav-close').on('tap, click', function(e) {
@@ -411,6 +417,7 @@ Handlebars.registerHelper('facebookUrl', function(activity) {
     this.css({
       position: 'absolute',
       visibility: 'hidden',
+      height: 'auto',
       left: 0,
       right: 0
     });
@@ -428,7 +435,7 @@ Handlebars.registerHelper('facebookUrl', function(activity) {
 	
 	var self = this;
 	var cb = function() {
-		self.css({height: 'auto'});
+		self.show().css({height: 'auto'});
 		if (callback) {
 			callback();
 		}
@@ -443,6 +450,7 @@ Handlebars.registerHelper('facebookUrl', function(activity) {
 
 ;(function ($) {
   $.fn.slideUp = function (duration, callback) {
+console.log(this);
   	var height = this.css('height');  
     this.css({
     	overflow: 'hidden',
